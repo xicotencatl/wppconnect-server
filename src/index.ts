@@ -60,8 +60,11 @@ export function initServer(serverOptions: Partial<ServerOptions>): {
   const PORT = process.env.PORT || serverOptions.port;
 
 app.use((req, res, next) => {
-  const token = req.headers['authorization'];
+  const token = req.headers['authorization'] || req.headers['Authorization'] || '';
   const expectedToken = process.env.TOKEN;
+
+  console.log('🔐 TOKEN HEADER:', token);
+  console.log('🎯 TOKEN EXPECTED:', expectedToken);
 
   if (!token || token !== expectedToken) {
     return res.status(401).json({ message: 'Unauthorized. Token missing or invalid' });
@@ -69,6 +72,7 @@ app.use((req, res, next) => {
 
   next();
 });
+
 
   
   app.use(cors());
