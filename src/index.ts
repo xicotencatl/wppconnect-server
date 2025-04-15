@@ -63,8 +63,9 @@ app.use((req, res, next) => {
   const token = req.headers['authorization'] || req.headers['Authorization'] || req.get('Authorization') || '';
   const expectedToken = process.env.TOKEN;
 
-  console.log('🔐 TOKEN HEADER:', token);
-  console.log('🎯 TOKEN EXPECTED:', expectedToken);
+ console.log("TOKEN HEADER =>", token);
+console.log("TOKEN ESPERADO =>", expectedToken);
+
 
   if (!token || token !== expectedToken) {
     return res.status(401).json({ message: 'Unauthorized. Token missing or invalid' });
