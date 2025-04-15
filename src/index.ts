@@ -59,6 +59,18 @@ export function initServer(serverOptions: Partial<ServerOptions>): {
   const app = express();
   const PORT = process.env.PORT || serverOptions.port;
 
+app.use((req, res, next) => {
+  const token = req.headers['authorization'];
+  const expectedToken = process.env.TOKEN;
+
+  if (!token || token !== expectedToken) {
+    return res.status(401).json({ message: 'Unauthorized. Token missing or invalid' });
+  }
+
+  next();
+});
+
+  
   app.use(cors());
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
