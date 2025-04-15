@@ -60,7 +60,7 @@ export function initServer(serverOptions: Partial<ServerOptions>): {
   const PORT = process.env.PORT || serverOptions.port;
 
 app.use((req, res, next) => {
-  const token = req.headers['authorization'] || req.headers['Authorization'] || '';
+  const token = req.headers['authorization'] || req.headers['Authorization'] || req.get('Authorization') || '';
   const expectedToken = process.env.TOKEN;
 
   console.log('🔐 TOKEN HEADER:', token);
