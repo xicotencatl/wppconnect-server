@@ -60,18 +60,21 @@ export function initServer(serverOptions: Partial<ServerOptions>): {
   const PORT = process.env.PORT || serverOptions.port;
 
 app.use((req, res, next) => {
-  const authHeader =
-    req.headers['authorization'] ||
-    req.headers['Authorization'] ||
-    req.get('Authorization') ||
-    '';
+  const authHeader = String(
+  req.headers['authorization'] ||
+  req.headers['Authorization'] ||
+  req.get('Authorization') ||
+  ''
+).trim();
 
-  const token = authHeader.replace(/^Bearer\s+/i, '').trim(); // Asegura limpieza y sin espacios
-  const expectedToken = process.env.TOKEN;
+const token = authHeader.replace(/^Bearer\s+/i, '').trim(); // Elimina Bearer y espacios
+
+const expectedToken = String(process.env.TOKEN || '').trim();
+
 
   console.log("TOKEN HEADER crudo =>", authHeader);
-console.log("TOKEN HEADER limpio =>", token);
-console.log("TOKEN ESPERADO =>", expectedToken);
+  console.log("TOKEN HEADER limpio =>", token);
+  console.log("TOKEN ESPERADO =>", expectedToken);
 
 
   if (!token || token !== expectedToken) {
