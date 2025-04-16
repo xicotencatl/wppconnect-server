@@ -73,6 +73,11 @@ routes.get(
 routes.post(
   '/api/:session/start-session',
   verifyToken,
+  (req, res, next) => {
+    console.log('🔧 Sesión recibida =>', req.params.session);
+    console.log('🧠 Webhook recibido =>', req.body.webhook);
+    next();
+  },
   SessionController.startSession
 );
 routes.post(
