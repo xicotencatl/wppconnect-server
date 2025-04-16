@@ -70,11 +70,9 @@ app.use((req, res, next) => {
 const token = authHeader.replace(/^Bearer\s+/i, '').trim(); // Elimina Bearer y espacios
 
 const expectedToken = String(process.env.TOKEN || '').trim();
-
-
-  console.log("TOKEN HEADER crudo =>", authHeader);
-  console.log("TOKEN HEADER limpio =>", token);
-  console.log("TOKEN ESPERADO =>", expectedToken);
+  console.log("TOKEN HEADER OXMA =>", authHeader);
+  console.log("TOKEN HEADER OXMAL =>", token);
+  console.log("TOKEN ESPERADO OXMA =>", expectedToken);
 
 
   if (!token || token !== expectedToken) {
