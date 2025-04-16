@@ -60,8 +60,10 @@ export function initServer(serverOptions: Partial<ServerOptions>): {
   const PORT = process.env.PORT || serverOptions.port;
 
 app.use((req, res, next) => {
-  const token = req.headers['authorization'] || req.headers['Authorization'] || req.get('Authorization') || '';
-  const expectedToken = process.env.TOKEN;
+  const authHeader = req.headers['authorization'] || req.headers['Authorization'] || req.get('Authorization') || '';
+const token = authHeader..replace(/^Bearer\s/i, ''); // Elimina "Bearer " si está presente
+const expectedToken = process.env.TOKEN;
+
 
  console.log("TOKEN HEADER =>", token);
 console.log("TOKEN ESPERADO =>", expectedToken);
