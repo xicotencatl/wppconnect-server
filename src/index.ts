@@ -60,29 +60,20 @@ export function initServer(serverOptions: Partial<ServerOptions>): {
   const PORT = process.env.PORT || serverOptions.port;
 
 app.use((req, res, next) => {
-  const authHeader = String(
-  req.headers['authorization'] ||
-  req.headers['Authorization'] ||
-  req.get('Authorization') ||
-  ''
-).trim();
+  const authHeader = req.headers['authorization'] || ''; // Solo usa esta línea
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+  const expectedToken = String(process.env.TOKEN || '').trim();
 
-const token = authHeader.replace(/^Bearer\s+/i, '').trim(); // Elimina Bearer y espacios
-
-const expectedToken = String(process.env.TOKEN || '').trim();
-  console.log("TOKEN HEADER OXMA =>", authHeader);
-  console.log("TOKEN HEADER OXMAL =>", token);
-  console.log("TOKEN ESPERADO OXMA =>", expectedToken);
-
+  console.log('TOKEN HEADER X=>', authHeader);
+  console.log('TOKEN LIMPIO X=>', token);
+  console.log('TOKEN ESPERADO X=>', expectedToken);
 
   if (!token || token !== expectedToken) {
-    return res.status(401).json({ message: 'Unauthorized. Token missing or invalid xx' });
+    return res.status(401).json({ message: 'Unauthorized. Token missing or invalid' });
   }
 
   next();
 });
-
-
 
   
   app.use(cors());
