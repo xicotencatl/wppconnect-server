@@ -64,22 +64,17 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): any => {
       }
     }
 
-    bcrypt.compare(
-      sessionDecrypt + secureToken,
-      tokenDecrypt,
-      function (err, result) {
-        if (result) {
-          req.session = formatSession(req.params.session);
-          req.token = tokenDecrypt;
-          req.client = clientsArray[req.session];
-          next();
-        } else {
-          return res
-            .status(401)
-            .json({ error: 'Check that the Session and Token are correct' });
-        }
-      }
-    );
+if (tokenDecrypt === secureToken) {
+  req.session = sessionDecrypt;
+  req.token = tokenDecrypt;
+  req.client = clientsArray[req.session];
+  next();
+} else {
+  return res
+    .status(401)
+    .json({ error: 'Check that the Session and Token are correct' });
+}
+
   } catch (error) {
     req.logger.error(error);
     return res.status(401).json({
